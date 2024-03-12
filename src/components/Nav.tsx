@@ -18,7 +18,7 @@ const Nav = () => {
         setSettings(c=>({...c,algoType:type}))
     }
     return (<nav className="w-screen bg-gray-300 grid grid-flow-row">
-        <div className="flex items-center justify-center w-full my-2 gap-4">
+        <div className="flex items-center justify-center w-full my-2 ">
             <button className={`border border-teal-100 shadow-md py-2 px-2 transition-all active:scale-95 ${settings.algoType==="merge sort" && "text-purple-500 font-bold "}`}
             onClick={()=>onAlgoChange("merge sort")}>Merge Sort </button>
             <button className={`border border-teal-100 shadow-md py-2 px-2 transition-all active:scale-9 ${settings.algoType==="insertion sort" && "text-purple-500 font-bold "}`}
@@ -27,7 +27,7 @@ const Nav = () => {
             onClick={()=> sort(settings.algoType)}
             >Sort!</button>
         </div>
-        <div className="flex flex-col items-center w-full pb-4">
+        <div className="flex flex-col items-center w-full pt-5">
             <label htmlFor="itemms_amount">Array Length : {settings.arrayLen}</label>
             <input type="range" name="items_amount" id="items_amount" className="w-full max-w-2xl" defaultValue={25} min={1}
                 onChange={onArrayChange}
