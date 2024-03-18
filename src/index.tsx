@@ -7,10 +7,13 @@ import AlgoContext from './components/context/AlgoContext';
 import Root from './components/Root';
 
 
+
 import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
+import DjikstraAlgo from './components/DjikstraAlgo';
+
 
 const router = createBrowserRouter([
   {
@@ -20,6 +23,10 @@ const router = createBrowserRouter([
   {
     path:"/sortingAlgos",
     element:<App/>
+  },
+  {
+    path:"/djikstraAlgo",
+    element:<DjikstraAlgo/>
   }
 ]);
 
