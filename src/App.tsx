@@ -7,7 +7,7 @@ import Root from './components/Root';
 
 function App() {
   return (
-    <main className='grid grid-rows-4'>
+    <main className='h-lvh grid grid-rows-4'>
     {/* <Root/> */}
     <Nav/>
     <Main/>

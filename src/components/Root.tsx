@@ -4,7 +4,7 @@ import { Link } from "react-router-dom"
 const Root = () => {
   return (<>
 
-    <ul className="flex flex-col justify-center items-center bg-black min-h-screen" >
+    <ul className="flex flex-col justify-center items-center bg-black h-dvh overflow-x-hidden" >
       {/* <div className="flex flex-row "><h1 className=" bg-white">Hello</h1> */}
       {/* </div> */}
       <div className="flex flex-row justify-center items-center bg-black">
