@@ -12,7 +12,7 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
-import DjikstraAlgo from './components/DjikstraAlgo';
+import DjikstraAlgo from './components/DjikstraAlgo.jsx';
 
 
 const router = createBrowserRouter([
