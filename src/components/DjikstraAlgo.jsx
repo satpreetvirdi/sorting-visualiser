@@ -18,27 +18,22 @@ const maps = {
   base: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
 };
 const DjikstraAlgo = () => {
-  const mapRef = useRef(null);
-  console.log(mapRef);
-  // State vars for our routing machine instance:
   const [routingMachine, setRoutingMachine] = useState(null);
+  let RoutingMachineRef = useRef(null);
+  console.log("Routing Machine", routingMachine);
 
-  // const mapRef = useRef();
   const [startPosition, setStartPosition] = useState(null);
   const [endPosition, setEndPosition] = useState(null);
-  // console.log(mapRef);
 
-  const RoutingMachineRef = useRef(null);
-  const map = mapRef.current;
+  const mapRef = useRef(null);
+  const [map, setMap] = useState(null);
 
   useEffect(() => {
-    // Check For the map instance:
-    console.log(map);
     if (!map) return;
     if (map) {
-      // Assign Control to React Ref:
-      RoutingMachineRef.current = L.Routing.control({
-        position: "topleft", // Where to position control on map
+      console.log("Map", map);
+      RoutingMachineRef = L.Routing.control({
+        position: "topleft",
         lineOptions: {
           // Options for the routing line
           styles: [
@@ -47,25 +42,39 @@ const DjikstraAlgo = () => {
             },
           ],
         },
-        waypoints: [startPosition, endPosition], // Point A - Point B
+        waypoints: [startPosition, endPosition],
+        
+        createMarker: function (i, waypoint, n) {
+          const icon = L.icon({
+            iconUrl: markerIconPng,
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+          });
+          return L.marker(waypoint.latLng, { icon: icon });
+        }, 
+        draggableWaypoints: true,  
       });
-      // Save instance to state:
-      setRoutingMachine(RoutingMachineRef.current);
+
+      setRoutingMachine(RoutingMachineRef);
+      setMap(mapRef.current);
     }
     console.log(RoutingMachineRef);
   }, [map]);
 
-  // Once routing machine instance is ready, add to map:
   useEffect(() => {
     if (!routingMachine) return;
     if (routingMachine) {
       routingMachine.addTo(map);
+      routingMachine.setWaypoints([startPosition, endPosition]);
     }
-  }, [routingMachine]);
+
+    console.log("Routing machine working");
+  }, [RoutingMachineRef,startPosition,endPosition]);
 
   const AddMarkerOnClick = () => {
     useMapEvents({
       click(e) {
+        setMap(mapRef.current);
         const { lat, lng } = e.latlng;
 
         if (!startPosition) {
@@ -78,50 +87,15 @@ const DjikstraAlgo = () => {
     return null;
   };
 
-  const handleMarkerDrag = (position, type) => {
-    if (type === "start") {
-      setStartPosition(position);
-    } else {
-      setEndPosition(position);
-    }
-  };
-
-  // useEffect(() => {
-  //   if (!mapRef.current) return;
-
-  //   const map = mapRef.current.LeafLet;
-  //   console.log(map);
-  //   const routingControl = L.Routing.control({
-  //     waypoints: [
-  //       L.latLng(startPosition), // Start position
-  //       L.latLng(endPosition) // End position
-  //     ],
-  //     routeWhileDragging: true,
-  //     geocoder: L.Control.Geocoder.nominatim(),
-  //     router: new L.Routing.OSRMv1({
-  //       serviceUrl: 'http://router.project-osrm.org/route/v1'
-  //     })
-  //   }).addTo(map);
-
-  //   return () => {
-  //     routingControl.removeFrom(map);
-  //   };
-  // }, []);
-
-  // Shortest Path
-  // const [showPath ,setShowPath] = useState(false);
-  // useEffect(() => {
-  //   if (!mapRef.current) return;
-  //   const map = mapRef.current.leafLetElement;
-  //   const control = L.Routing.control({
-  //     waypoints: [L.latLng(startPosition), L.latLng(endPosition)],
-  //     routeWhileDragging: false,
-  //   }).addTo(map);
-  //   // console.log(control);
-  // }, []);
-
-  // Create the routing-machine instance:
-
+  const markerIcon = useMemo(
+    () =>
+      new L.Icon({
+        iconUrl: markerIconPng,
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+      }),
+    []
+  );
   return (
     <div className="bg-stone-600">
       <div className="flex justify-center text-xl pt-3 text-purple-300 font-bold">
@@ -134,6 +108,8 @@ const DjikstraAlgo = () => {
           center={[28.43, 77.32]}
           zoom={4}
           scrollWheelZoom={true}
+
+          // ref={mapRef}
         >
           <LayersControl position="topright">
             <LayersControl.BaseLayer checked name="DjikstaAlgo">
@@ -149,15 +125,9 @@ const DjikstraAlgo = () => {
               position={startPosition}
               draggable={true}
               eventHandlers={{
-                dragend: (e) => handleMarkerDrag(e.target.getLatLng(), "start"),
+                dragend: (e) => setStartPosition(e.target.getLatLng()),
               }}
-              icon={
-                new Icon({
-                  iconUrl: markerIconPng,
-                  iconSize: [25, 41],
-                  iconAnchor: [12, 41],
-                })
-              }
+              // icon={markerIcon}
             >
               <Popup>Startig Position</Popup>
             </Marker>
@@ -168,15 +138,9 @@ const DjikstraAlgo = () => {
               position={endPosition}
               draggable={true}
               eventHandlers={{
-                dragend: (e) => handleMarkerDrag(e.target.getLatLng(), "end"),
+                dragend: (e) => setEndPosition(e.target.getLatLng()),
               }}
-              icon={
-                new Icon({
-                  iconUrl: markerIconPng,
-                  iconSize: [25, 41],
-                  iconAnchor: [12, 41],
-                })
-              }
+              // icon={markerIcon}
             >
               <Popup>Ending Position</Popup>
             </Marker>
