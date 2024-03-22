@@ -87,15 +87,22 @@ const DjikstraAlgo = () => {
     return null;
   };
 
-  const markerIcon = useMemo(
-    () =>
-      new L.Icon({
-        iconUrl: markerIconPng,
-        iconSize: [25, 41],
-        iconAnchor: [12, 41],
-      }),
-    []
-  );
+  // const markerIcon = useMemo(
+  //   () =>
+  //     new L.Icon({
+  //       iconUrl: markerIconPng,
+  //       iconSize: [25, 41],
+  //       iconAnchor: [12, 41],
+  //     }),
+  //   []
+  // );
+  
+  const resetMap = ()=>{
+    setStartPosition(null);
+    setEndPosition(null);
+ 
+  }
+
   return (
     <div className="bg-stone-600">
       <div className="flex justify-center text-xl pt-3 text-purple-300 font-bold">
@@ -106,7 +113,7 @@ const DjikstraAlgo = () => {
           ref={mapRef}
           style={{ height: "100%", minHeight: "100%" }}
           center={[28.43, 77.32]}
-          zoom={4}
+          zoom={10}
           scrollWheelZoom={true}
 
           // ref={mapRef}
@@ -148,13 +155,14 @@ const DjikstraAlgo = () => {
         </MapContainer>
       </div>
       <div className="flex justify-center pb-10 ">
-        <button
+        {/* <button
           type="button"
           className="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
         >
           Find Shortest Path
-        </button>
+        </button> */}
         <button
+          onClick ={resetMap}
           type="button"
           className="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
         >
@@ -162,9 +170,9 @@ const DjikstraAlgo = () => {
         </button>
         <button
           type="button"
-          className="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+          className="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 opacity-50"
         >
-          Alternative
+          Visulise it [Under Process]
         </button>
       </div>
     </div>
